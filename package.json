@@ -11,14 +11,17 @@
   },
   "dependencies": {
     "core-js": "^3.13.1",
+    "element-plus": "^1.0.2-beta.46",
     "register-service-worker": "^1.7.2",
     "vue": "^3.0.11",
     "vue-class-component": "^8.0.0-rc.1",
+    "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-router": "^4.0.8",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.167",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vue/cli-plugin-babel": "^4.5.13",
@@ -39,7 +42,8 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "typescript": "^4.1.5",
-    "vue-jest": "^5.0.0-alpha.10"
+    "vue-jest": "^5.0.0-alpha.10",
+    "svg-sprite-loader": "^6.0.5"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

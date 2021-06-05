@@ -4,4 +4,12 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 
-createApp(App).use(store).use(router).mount('#app')
+import ElementPlus from 'element-plus';
+import 'element-plus/lib/theme-chalk/index.css';
+
+import loadComponents from '@/components'
+import '@/icons'
+
+const app = createApp(App)
+loadComponents(app)
+app.use(store).use(router).use(ElementPlus).mount('#app')
