@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-card">
       <div class="title">
-         <h3>中至集团</h3>
+         <h3>登入</h3>
 <!--        <img src="@/assets/layout/logo-text.png">-->
       </div>
       <div class="content">
@@ -47,11 +47,6 @@
               />
             </span>
           </el-form-item>
-          <el-form-item prop="code">
-            <span class="svg-container">
-              <svg-icon name="table" />
-            </span>
-          </el-form-item>
           <el-button
               :loading="loading"
               type="primary"
@@ -85,9 +80,9 @@ interface LoginRules {
   code: Array<any>
 }
 
-interface InterfaceObject {
-  [key: string]: any
-}
+// interface InterfaceObject {
+//   [key: string]: any
+// }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const validateUsername = (rule: any, value: string, callback: Function) => {
@@ -165,7 +160,9 @@ export default defineComponent({
       //       const { data } = res
       //       setCookie('token', `${data.tokenHaed} ${data.token}`)
       //       setCookie('expiresTime', '1618454940987')
-      //       router.push({ path: '/' })
+      // console.log(11123)
+      //
+      // router.push({ path: '/home' })
       //       loading.value = false
       //     })
       //   } else {
@@ -182,12 +179,12 @@ export default defineComponent({
           // })
           loading.value = false
           router
-              .push({
-                path: '/'
-              })
-              .catch((err) => {
-                console.warn(err)
-              })
+            .push({
+              path: '/home'
+            })
+            .catch((err) => {
+              console.warn(err)
+            })
         } else {
           return false
         }
@@ -264,7 +261,7 @@ export default defineComponent({
 
 <style lang="scss">
 .login-container {
-  min-height: 100%;
+  min-height: 100vh;
   width: 100%;
   background-color: rgb(21, 45, 61);
   overflow: hidden;
@@ -275,7 +272,7 @@ export default defineComponent({
     overflow: hidden;
     width: 600px;
     border-radius: 20px;
-    box-shadow: 0px 0px 10px #000;
+    //box-shadow: 0px 0px 10px #000;
     .title {
       height: 150px;
       display: flex;
@@ -288,7 +285,7 @@ export default defineComponent({
       }
     }
     .content {
-      background-color: #fff;
+      //background-color: #fff;
       padding: 60px;
       .svg-container {
         padding: 6px 5px 6px 15px;
