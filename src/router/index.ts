@@ -1,46 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
-const routes: Array<RouteRecordRaw> = [
+export const constantRoutes:Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "about" */ '../views/login/index.vue')
-  },
-  {
-    path: '/Home',
-    name: 'Home',
-    component: Layout,
-    meta: {
-      title: '首页',
-      icon: 'user',
-      affix: true
-    },
-    children: [
-      {
-        path: 'dashboard1',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'),
-        name: 'Dashboard1',
-        meta: {
-          title: 'dashboard1',
-          icon: 'user',
-          affix: true
-        }
-      },
-      {
-        meta: {
-          title: 'about',
-          icon: 'user',
-          affix: true
-        },
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-      }
-    ]
   },
   {
     path: '/',
@@ -61,9 +26,27 @@ const routes: Array<RouteRecordRaw> = [
   }
 ]
 
+// 自动获取modules配置
+const files = require.context('./modules', false, /\.ts$/)
+let tmp:Array<RouteRecordRaw> = []
+files.keys().forEach(key => {
+  tmp = tmp.concat(files(key).default)
+})
+
+export const asyncRouterMap:Array<RouteRecordRaw> = [
+  ...tmp,
+  // 404 page must be placed at the end !!!
+  {
+    // 匹配所有路径  vue2使用*   vue3使用/:pathMatch(.*)*或/:pathMatch(.*)或/:catchAll(.*)
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: () => import('@/views/404.vue')
+  }
+]
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes: constantRoutes.concat(asyncRouterMap)
 })
 
 export default router

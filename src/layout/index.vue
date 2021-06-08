@@ -3,14 +3,17 @@
   <div>
     <Sidebar class="sidebar-container" />
     <div class="main-container">
-      <NavBar></NavBar>
+      <div :class="{'fixed-header':fixedHeader}">
+        <NavBar></NavBar>
+      </div>
+      <AppMain />
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import { Sidebar, NavBar } from './components'
+import { Sidebar, NavBar, AppMain } from './components'
 // import { useStore } from '@/store'
 import { useStore } from 'vuex'
 // import { globalStoreKey } from '../store';
@@ -24,7 +27,8 @@ export default defineComponent({
   name: 'Layout',
   components: {
     Sidebar,
-    NavBar
+    NavBar,
+    AppMain
   },
   setup() {
     const store = useStore()
@@ -38,8 +42,12 @@ export default defineComponent({
         mobile: false
       }
     })
+    const fixedHeader = computed(() => {
+      return store.state.settings.fixedHeader
+    })
     return {
-      classObj
+      classObj,
+      fixedHeader
     }
   }
 })
@@ -55,6 +63,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   text-align: left;
+  overflow: auto;
 
   @include clearfix;
 

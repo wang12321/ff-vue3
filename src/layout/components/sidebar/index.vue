@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div :class="{'has-logo': showLogo}">
+    <SidebarLogo v-if="showLogo" :collapse="isCollapse" />
+
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
           :collapse="isCollapse"
           :unique-opened="true"
-          default-active="1"
+          :default-active="activeMenu"
           :background-color="variables.menuBg"
           :text-color="variables.menuText"
           :active-text-color="variables.menuActiveText"
@@ -26,31 +28,47 @@
 
 <script>
 import variables from '@/styles/variables.scss'
+import SidebarLogo from './Logo.vue'
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import SidebarItem from './sidebar-item.vue'
+import { useRoute } from 'vue-router'
+import SidebarItem from './Item.vue'
 import router from '@/router'
 
 export default defineComponent({
   name: 'Index',
   components: {
-    SidebarItem
+    SidebarItem,
+    SidebarLogo
   },
   setup() {
     const store = useStore()
-    // const route = useRoute()
-    console.log(router.options.routes)
+    const route = useRoute()
+
     const routes = computed(() => {
       return router.options.routes
     })
-
+    const showLogo = computed(() => {
+      return store.state.settings.sidebarLogo
+    })
     const isCollapse = computed(() => {
       return store.state.app.sidebar.opened
+    })
+    const activeMenu = computed(() => {
+      const { meta, path } = route
+      if (meta !== null || meta !== undefined) {
+        if (meta.activeMenu) {
+          return meta.activeMenu
+        }
+      }
+      return path
     })
     return {
       variables,
       isCollapse,
-      routes
+      routes,
+      showLogo,
+      activeMenu
     }
   }
 })

@@ -1,15 +1,18 @@
 import { createStore } from 'vuex'
-import app from './modules/app'
-export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-    app
+const modulesFiles = require.context('./modules', true, /\.ts$/)
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+  // set './app.ts' => 'app'
+  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
+  const value = modulesFiles(modulePath)
+  interface Imodules {
+    [key: string]: any
   }
+  (<Imodules>modules)[moduleName] = value.default
+  return modules
+}, {})
+
+export default createStore({
+  modules
 })
 
 // import { InjectionKey } from 'vue'

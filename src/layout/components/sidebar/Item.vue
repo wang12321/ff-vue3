@@ -11,10 +11,6 @@
     <template
       v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children"
     >
-<!--      <el-menu-item index="2">-->
-<!--        <i class="el-icon-menu"></i>-->
-<!--        <template #title>导航二</template>-->
-<!--      </el-menu-item>-->
       <SidebarItemLink
         v-if="theOnlyOneChild.meta"
         :to="resolvePath(theOnlyOneChild.path)"
@@ -65,7 +61,7 @@ import path from 'path'
 import { computed, defineComponent, PropType } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 import { isExternal } from '@/utils/validate'
-import SidebarItemLink from './sidebar-item-link.vue'
+import SidebarItemLink from './Link.vue'
 export default defineComponent({
   name: 'SidebarItem',
   props: {

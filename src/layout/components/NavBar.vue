@@ -6,30 +6,63 @@
         class="hamburger-container"
         @toggle-click="toggleSideBar"
     />
+    <bread-crumb id="breadcrumb-container" class="breadcrumb-container" />
+    <div class="right-menu">
+      <template v-if="device !== 'mobile'">
+        <Screenfull class="right-menu-item hover-effect" />
+<!--        <LangSelect class="right-menu-item hover-effect" v-if="langSelect" />-->
+      </template>
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+        <div class="avatar-wrapper">
+          <span>123</span>
+          <i class="el-icon-arrow-down" />
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="logout">
+              <span style="display: block">
+                退出登入
+              </span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
 
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs } from 'vue'
-import Hamburger from '@/components/hamburger/index.vue'
+import { defineComponent, reactive, toRefs, computed } from 'vue'
+// import Hamburger from '@/components/hamburger/index.vue'
+// import breadCrumb from '@/components/bread-crumb/index.vue'
+
 import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'NavBar',
   components: {
-    Hamburger
+    // Hamburger,
+    // breadCrumb
   },
   setup() {
     const store = useStore()
-
+    const device = computed(() => {
+      return store.state.app.device.toString()
+    })
     const state = reactive({
       toggleSideBar: () => {
-        console.log(11111)
         store.commit('app/UPDATE_Sidebar_opened')
+      },
+      logout: () => {
+        // store.dispatch(UserActionTypes.ACTION_LOGIN_OUT)
+        // router.push('/login').catch((err) => {
+        //   console.warn(err)
+        // })
       }
     })
     return {
+      device,
       ...toRefs(state)
     }
   }
@@ -91,6 +124,9 @@ export default defineComponent({
 
     .avatar-container {
       .avatar-wrapper {
+        float: right;
+        height: 45px;
+        line-height: 45px;
         margin-top: 5px;
         margin-right: 16px;
         margin-left: 16px;
