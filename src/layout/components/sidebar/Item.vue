@@ -16,7 +16,7 @@
         :to="resolvePath(theOnlyOneChild.path)"
       >
         <el-menu-item
-          :index="resolvePath(theOnlyOneChild.path)"
+          :index="theOnlyOneChild.name"
           :class="{'submenu-title-noDropdown': isFirstLevel}"
         >
           <svg-icon

@@ -10,6 +10,7 @@ import 'element-plus/lib/theme-chalk/index.css'
 import loadComponents from '@/components'
 import '@/icons'
 import '@/styles/index.scss' // global css
+import '@/permission' // permission control
 
 const app = createApp(App)
 loadComponents(app)

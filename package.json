@@ -13,6 +13,7 @@
     "@types/js-cookie": "^2.2.6",
     "core-js": "^3.13.1",
     "element-plus": "^1.0.2-beta.46",
+    "nprogress": "^0.2.0",
     "path-to-regexp": "^6.2.0",
     "register-service-worker": "^1.7.2",
     "screenfull": "^5.1.0",

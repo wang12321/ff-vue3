@@ -46,6 +46,7 @@ export default defineComponent({
     const route = useRoute()
 
     const routes = computed(() => {
+      console.log(router.options.routes)
       return router.options.routes
     })
     const showLogo = computed(() => {
@@ -55,13 +56,13 @@ export default defineComponent({
       return store.state.app.sidebar.opened
     })
     const activeMenu = computed(() => {
-      const { meta, path } = route
+      const { meta, name } = route
       if (meta !== null || meta !== undefined) {
         if (meta.activeMenu) {
           return meta.activeMenu
         }
       }
-      return path
+      return name
     })
     return {
       variables,
