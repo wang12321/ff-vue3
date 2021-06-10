@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import defaultSettings from '@/settings'
 import { ActionTree, MutationTree } from 'vuex'
 
@@ -14,9 +12,12 @@ declare interface settingStore {
   Layout: boolean,
   navbarBackground: string,
   navbarColor: string,
-  NODE_ENV: string,
+  NODE_ENV: string | undefined,
+  isUnifiedLogin: boolean,
+  isGameShow: boolean,
+  isSwitchEnvironment: boolean|string|undefined
 }
-const state = {
+const state:settingStore = {
   fixedHeader: defaultSettings.fixedHeader,
   sidebarLogo: defaultSettings.sidebarLogo,
   logo: defaultSettings.logo,

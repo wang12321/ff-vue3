@@ -35,7 +35,8 @@ const routerList:Array<RouteRecordRaw> = []
 // const routerMap = {}
 
 requireAllVueComponents.keys().forEach((allVueComponentItem:string) => {
-  const completeName = allVueComponentItem && allVueComponentItem.match(/\w+\.vue$/)![0]
+  const allVueComponentItems = allVueComponentItem.match(/\w+\.vue$/) || []
+  const completeName = allVueComponentItems[0]
   const routerObj:RouteRecordRaw = {} as RouteRecordRaw
   routerObj.path = '/' + allVueComponentItem.replace(/\./, 'autoRouter').replace(/.vue$/, '')
   routerObj.name = completeName.replace(/.vue$/, '')
@@ -150,6 +151,17 @@ requireAllVueComponents.keys().forEach((allVueComponentItem:string) => {
 })
 
 export const constantRoutes:Array<RouteRecordRaw> = [
+  {
+    path: '/redirect',
+    component: Layout,
+    meta: { hidden: true },
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import(/* webpackChunkName: "redirect" */ '@/views/redirect/index.vue')
+      }
+    ]
+  },
   {
     path: '/login',
     name: 'login',

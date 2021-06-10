@@ -63,7 +63,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, ref, nextTick } from 'vue'
 // import { setCookie } from '@/utils/cookies'
-// import { useStore } from '@/store'
+import { useStore } from 'vuex'
 // import { UserActionTypes } from '@/store/modules/user/action-types'
 import { useRouter } from 'vue-router'
 
@@ -114,7 +114,7 @@ export default defineComponent({
   setup() {
     // hooks
     const router = useRouter()
-    // const store = useStore()
+    const store = useStore()
     // data
     const src = ref<string>('')
     const loginForm = reactive<LoginForm>({
@@ -172,75 +172,29 @@ export default defineComponent({
       // })
       loginFormDom.value.validate(async(valid: boolean) => {
         if (valid) {
+          // console.log(api)
           loading.value = true
           // await store.dispatch(UserActionTypes.ACTION_LOGIN, {
           //   username: loginForm.username,
           //   password: loginForm.password
           // })
-          loading.value = false
-          router
-            .push({
-              path: '/home'
-            })
-            .catch((err) => {
-              console.warn(err)
-            })
+          store.dispatch('user/login', {
+            username: loginForm.username,
+            password: loginForm.password
+          }).then(() => {
+            loading.value = false
+            router
+              .push({
+                path: '/home'
+              })
+              .catch((err) => {
+                console.warn(err)
+              })
+          })
         } else {
           return false
         }
       })
-    }
-    // 创建验证码
-    const createCode: () => void = () => {
-      // 先清空验证码的输入
-      let code = ''
-      loginForm.code = ''
-      const codeLength = 12
-      // 随机数
-      const random: Array<number | string> = [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z'
-      ]
-      for (let i = 0; i < codeLength; i++) {
-        const index = Math.floor(Math.random() * 36)
-        code += random[index]
-      }
-      loginForm.checkCode = `${code}`
-      src.value = `/api/v1/login/authcode?token=${code}`
     }
 
     return {
@@ -252,8 +206,7 @@ export default defineComponent({
       loading,
       passwordType,
       showPwd,
-      handleLogin,
-      createCode
+      handleLogin
     }
   }
 })
@@ -305,8 +258,8 @@ export default defineComponent({
       }
       .show-code {
         position: absolute;
-        right: 0px;
-        top: 0px;
+        right: 0;
+        top: 0;
         font-size: 16px;
         color: #889aa4;
         cursor: pointer;
@@ -336,16 +289,16 @@ $cursor: #666;
     width: 85%;
     input {
       background: transparent;
-      border: 0px;
+      border: 0;
       -webkit-appearance: none;
-      border-radius: 0px;
+      border-radius: 0;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
       caret-color: $cursor;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
+        box-shadow: 0 0 0 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
       }
     }

@@ -22,7 +22,7 @@
           <svg-icon
             v-if="theOnlyOneChild.meta.icon"
             :name="theOnlyOneChild.meta.icon"
-            font-size="17px"
+            font-size="14px"
           />
           <span v-if="theOnlyOneChild.meta.title">{{
               theOnlyOneChild.meta.title

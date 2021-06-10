@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   logo: 'component', // 配置logo 只处理了svg的
   title: 'Vue3-Admin-FF', // 配置title
   breadcrumb: true, // 配置面包屑

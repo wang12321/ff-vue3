@@ -14,7 +14,7 @@
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <span>123</span>
+          <span>{{name}}</span>
           <i class="el-icon-arrow-down" />
         </div>
         <template #dropdown>
@@ -38,6 +38,7 @@ import { defineComponent, reactive, toRefs, computed } from 'vue'
 // import breadCrumb from '@/components/bread-crumb/index.vue'
 
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'NavBar',
@@ -47,22 +48,28 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
+
     const device = computed(() => {
       return store.state.app.device.toString()
+    })
+    const name = computed(() => {
+      return store.getters.name.toString()
     })
     const state = reactive({
       toggleSideBar: () => {
         store.commit('app/UPDATE_Sidebar_opened')
       },
-      logout: () => {
-        // store.dispatch(UserActionTypes.ACTION_LOGIN_OUT)
-        // router.push('/login').catch((err) => {
-        //   console.warn(err)
-        // })
+      logout: async() => {
+        await store.dispatch('user/logout')
+        router.push('/login').catch((err) => {
+          console.warn(err)
+        })
       }
     })
     return {
       device,
+      name,
       ...toRefs(state)
     }
   }

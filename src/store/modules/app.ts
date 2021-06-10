@@ -9,7 +9,7 @@ declare interface appStore {
   },
   device: string
 }
-const state = {
+const state:appStore = {
   sidebar: {
     opened: getSidebarStatus() ? getSidebarStatus() !== 'closed' : true,
     withoutAnimation: false

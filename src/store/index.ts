@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import getters from './getters'
+
 const modulesFiles = require.context('./modules', true, /\.ts$/)
 const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   // set './app.ts' => 'app'
@@ -12,6 +14,7 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 }, {})
 
 export default createStore({
+  getters,
   modules
 })
 
