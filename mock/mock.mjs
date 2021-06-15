@@ -96,6 +96,35 @@ router.post('/user/info', ctx => {
   ctx.body = fhcode(info)
 })
 
+// =======省外
+// 登入
+router.post('/sw/user/login', ctx => {
+  const { username } = ctx.request.body
+  const token = tokens[username]
+  ctx.body = fhcode(token)
+})
+
+// 用户信息
+router.post('/sw/user/info', ctx => {
+  const { token } = ctx.request.body
+  const info = users[token]
+  ctx.body = fhcode(info)
+})
+
+// =======新环境
+// 登入
+router.post('/new/user/login', ctx => {
+  const { username } = ctx.request.body
+  const token = tokens[username]
+  ctx.body = fhcode(token)
+})
+
+// 用户信息
+router.post('/new/user/info', ctx => {
+  const { token } = ctx.request.body
+  const info = users[token]
+  ctx.body = fhcode(info)
+})
 function fhcode(obj, msg, code) {
   return {
     errno: code || '0',

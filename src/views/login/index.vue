@@ -185,7 +185,7 @@ export default defineComponent({
             loading.value = false
             router
               .push({
-                path: '/home'
+                path: '/dashboard'
               })
               .catch((err) => {
                 console.warn(err)

@@ -8,17 +8,27 @@
 const development = {
   user: 'http://127.0.0.1:9000/'
 }
+const developmentSW = {
+  user: 'http://127.0.0.1:9000/sw/'
+}
+const developmentNEW = {
+  user: 'http://127.0.0.1:9000/new/'
+}
 const production = {
   user: 'http://127.0.0.1:9000/'
 }
-const productionsw = {
-  user: 'http://127.0.0.1:9000/'
+const productionSW = {
+  user: 'http://127.0.0.1:9000/sw/'
 }
-const developmentsw = productionsw
+const productionNEW = {
+  user: 'http://127.0.0.1:9000/new/'
+}
 
 export default {
   development,
-  developmentsw,
+  developmentSW,
+  developmentNEW,
   production,
-  productionsw
+  productionSW,
+  productionNEW
 }

@@ -9,8 +9,8 @@
     <bread-crumb id="breadcrumb-container" class="breadcrumb-container" />
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
+        <header-search id="header-search" class="right-menu-item" />
         <Screenfull class="right-menu-item hover-effect" />
-<!--        <LangSelect class="right-menu-item hover-effect" v-if="langSelect" />-->
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -39,10 +39,12 @@ import { defineComponent, reactive, toRefs, computed } from 'vue'
 
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import HeaderSearch from '@/components/HeaderSearch'
 
 export default defineComponent({
   name: 'NavBar',
   components: {
+    HeaderSearch
     // Hamburger,
     // breadCrumb
   },

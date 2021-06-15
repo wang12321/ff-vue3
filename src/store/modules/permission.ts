@@ -23,11 +23,12 @@ function hasPermission(roles:string[], route:RouteRecordRaw) {
 
 // 左侧菜单排序
 const compare = function(prop:string) {
-  return function(obj1:any, obj2:any) {
-    console.log(obj1)
-
-    const val1 = obj1[prop]
-    const val2 = obj2[prop]
+  return function(obj1:RouteRecordRaw, obj2:RouteRecordRaw):number {
+    interface IRouteRecordRawType {
+      [key: string]: any
+    }
+    const val1 = (<IRouteRecordRawType>obj1)[prop]
+    const val2 = (<IRouteRecordRawType>obj2)[prop]
     if (val1 < val2) {
       return -1
     } else if (val1 > val2) {

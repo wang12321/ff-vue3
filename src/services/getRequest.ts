@@ -22,7 +22,8 @@ Myserver.prototype.postData = function(name:string, urlObj:any) {
   if (getIsUseMasterApiKey() === 'true' && process.env.NODE_ENV && process.env.NODE_ENV.indexOf('development') > -1) {
     accounts = apiURL['production'][name]
   } else {
-    accounts = apiURL['production'][name]
+    const environmentConfig = process.env.VUE_APP_BASE_API || ''
+    accounts = apiURL[environmentConfig][name]
   }
   this[name] = {}
   Object.keys(urlObj).forEach((apiName) => {
