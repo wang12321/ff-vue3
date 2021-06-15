@@ -24,9 +24,11 @@
             :name="theOnlyOneChild.meta.icon"
             font-size="14px"
           />
-          <span v-if="theOnlyOneChild.meta.title">{{
+          <span v-if="theOnlyOneChild.meta.title ">{{
               theOnlyOneChild.meta.title
-          }}</span>
+          }}
+            <span v-if="theOnlyOneChild.meta.newTime && theOnlyOneChild.meta.newTime.getTime() > new Date().getTime()" style='color: red;display: inline-block;margin-top: -10px;padding:0 5px;font-weight: bold'>New!</span>
+          </span>
         </el-menu-item>
       </SidebarItemLink>
     </template>
@@ -39,7 +41,9 @@
         />
         <span v-if="item.meta && item.meta.title">{{
           item.meta.title
-        }}</span>
+        }}
+          <span v-if="item.meta.newTime && item.meta.newTime.getTime() > new Date().getTime()" style='color: red;display: inline-block;margin-top: -10px;padding:0 5px;font-weight: bold'>New!</span>
+        </span>
       </template>
       <template v-if="item.children">
         <sidebar-item

@@ -24,6 +24,8 @@ function hasPermission(roles:string[], route:RouteRecordRaw) {
 // 左侧菜单排序
 const compare = function(prop:string) {
   return function(obj1:any, obj2:any) {
+    console.log(obj1)
+
     const val1 = obj1[prop]
     const val2 = obj2[prop]
     if (val1 < val2) {

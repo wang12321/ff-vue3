@@ -129,7 +129,7 @@ export default defineComponent({
     background-color: rgba(52, 78, 104, 0.5) !important;
   }
   &.is-active {
-    border-left: 4px solid #39cedd !important;
+    //border-left: 4px solid #39cedd !important;
   }
 }
 

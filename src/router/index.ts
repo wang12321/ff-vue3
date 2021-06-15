@@ -78,37 +78,50 @@ requireAllVueComponents.keys().forEach((allVueComponentItem:string) => {
     return
   }
   // 初始化属性值
-  const routerAttribute = function(name:string, attribute:string) {
+  const routerAttribute = function(name:string, attribute:string, isChildrenName?:string) {
     const init = {
       index: 1,
       icon: 'component',
-      name: name,
+      name: isChildrenName || name,
       permission: [1, 2, 3],
       newTime: new Date()
     }
     interface Iinit {
       [key: string]: any
     }
-    if (attribute === 'newTime') {
-      return (routerName[name] && routerName[name] !== '' && routerName[name][attribute]) ? new Date(routerName[name][attribute]) : (<Iinit>init)[attribute]
+    if (!isChildrenName) {
+      if (attribute === 'newTime') {
+        return (routerName[name] && routerName[name] !== '' && routerName[name][attribute]) ? new Date(routerName[name][attribute]) : (<Iinit>init)[attribute]
+      }
+      return (routerName[name] && routerName[name] !== '' && routerName[name][attribute]) ? routerName[name][attribute] : (<Iinit>init)[attribute]
+    } else if (isChildrenName && isChildrenName === name) {
+      if (attribute === 'newTime') {
+        return (routerName[isChildrenName] && routerName[isChildrenName] !== '' && routerName[isChildrenName][attribute]) ? new Date(routerName[isChildrenName][attribute]) : (<Iinit>init)[attribute]
+      }
+      return (routerName[isChildrenName] && routerName[isChildrenName] !== '' && routerName[isChildrenName][attribute]) ? routerName[isChildrenName][attribute] : (<Iinit>init)[attribute]
+    } else {
+      if (attribute === 'newTime') {
+        return (routerName[name] && routerName[name] !== '' && routerName[name]['children'] && routerName[name]['children'][isChildrenName] && routerName[name]['children'][isChildrenName] !== '' && routerName[name]['children'][isChildrenName][attribute]) ? new Date(routerName[name]['children'][isChildrenName][attribute]) : (<Iinit>init)[attribute]
+      }
+      return (routerName[name] && routerName[name] !== '' && routerName[name]['children'] && routerName[name]['children'][isChildrenName] && routerName[name]['children'][isChildrenName] !== '' && routerName[name]['children'][isChildrenName][attribute]) ? routerName[name]['children'][isChildrenName][attribute] : (<Iinit>init)[attribute]
     }
-    return (routerName[name] && routerName[name] !== '' && routerName[name][attribute]) ? routerName[name][attribute] : (<Iinit>init)[attribute]
   }
   // 设置父属性值
-  const parentAttribute = (name:string) => {
-    router.index = routerAttribute(name, 'index')
-    router.meta.icon = routerAttribute(name, 'icon')
-    router.meta.title = routerAttribute(name, 'name')
-    router.meta.permissionArray = routerAttribute(name, 'permission')
-    router.meta.newTime = routerAttribute(name, 'newTime')
+  const parentAttribute = (parentName:string, childrenName:string) => {
+    router.index = routerAttribute(parentName, 'index')
+    router.meta.icon = routerAttribute(parentName, 'icon')
+    router.meta.title = routerAttribute(parentName, 'name')
+    router.meta.permissionArray = routerAttribute(parentName, 'permission')
+    router.meta.newTime = routerAttribute(parentName, 'newTime')
+    childrenAttribute(parentName, childrenName)
   }
   // 设置子属性值
-  const childrenAttribute = (name:string) => {
-    routerChildren.index = routerAttribute(name, 'index')
-    routerChildren.meta.icon = routerAttribute(name, 'icon')
-    routerChildren.meta.title = routerAttribute(name, 'name')
-    routerChildren.meta.newTime = routerAttribute(name, 'newTime')
-    routerChildren.meta.permissionArray = routerAttribute(name, 'permission')
+  const childrenAttribute = (parentName:string, childrenName:string) => {
+    routerChildren.index = routerAttribute(parentName, 'index', childrenName)
+    routerChildren.meta.icon = routerAttribute(parentName, 'icon', childrenName)
+    routerChildren.meta.title = routerAttribute(parentName, 'name', childrenName)
+    routerChildren.meta.newTime = routerAttribute(parentName, 'newTime', childrenName)
+    routerChildren.meta.permissionArray = routerAttribute(parentName, 'permission', childrenName)
   }
   switch (routerArr.length) {
     case 3:
@@ -116,11 +129,10 @@ requireAllVueComponents.keys().forEach((allVueComponentItem:string) => {
       // routerMap[routerObj.name] = routerObj.component
 
       // 当路由不是嵌套路径时 直接push到routerList中
-      parentAttribute(routerObj.name)
+      parentAttribute(routerObj.name, routerObj.name)
       router.children = router.children || []
       router.children.push(routerChildren)
       routerChildren.path = routerObj.path + ((routerName[routerObj.name] && routerName[routerObj.name] !== '' && routerName[routerObj.name]['isID']) ? routerName[routerObj.name]['isID'] : '')
-      childrenAttribute(routerObj.name)
       routerList.push(router)
       break
     case 4:
@@ -131,9 +143,12 @@ requireAllVueComponents.keys().forEach((allVueComponentItem:string) => {
       router.path = routerArr[2] === routerArr[3] ? '/' + routerArr[2] + 'p' : '/' + routerArr[1] + '/' + routerArr[2]
       router.name = routerArr[2] + 'p'
       router.meta.breadcrumb = routerArr[2] !== routerArr[3]
-      parentAttribute(routerArr[2])
-      routerChildren.path = routerArr[3] + ((routerName[routerObj.name] && routerName[routerObj.name] !== '' && routerName[routerObj.name]['isID']) ? routerName[routerObj.name]['isID'] : '')
-      childrenAttribute(routerObj.name)
+      parentAttribute(routerArr[2], routerObj.name)
+      if (routerArr[2] === routerArr[3]) {
+        routerChildren.path = routerArr[3] + ((routerName[routerArr[2]] && routerName[routerArr[2]] !== '' && routerName[routerArr[2]]['isID']) ? routerName[routerArr[2]]['isID'] : '')
+      } else {
+        routerChildren.path = routerArr[3] + ((routerName[routerArr[2]] && routerName[routerArr[2]] !== '' && routerName[routerArr[2]]['children'] && routerName[routerArr[2]]['children'] !== '' && routerName[routerArr[2]]['children'][routerObj.name] && routerName[routerArr[2]]['children'][routerObj.name] !== '' && routerName[routerArr[2]]['children'][routerObj.name]['isID']) ? routerName[routerArr[2]]['children'][routerObj.name]['isID'] : '')
+      }
       routerList.forEach(item => {
         if (routerArr[2] + 'p' === item.name) {
           item.children = item.children || []
@@ -165,7 +180,12 @@ export const constantRoutes:Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/login/index.vue')
+    component: () => import(/* webpackChunkName: "about" */ '@/views/login/index.vue')
+  },
+  {
+    path: '/noPermission',
+    component: () => import('@/views/noPermission.vue'),
+    meta: { hidden: true }
   },
   {
     path: '/',
