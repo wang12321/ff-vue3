@@ -76,7 +76,7 @@ export default defineComponent({
     const { ctx } = instance as any
 
     const toLastView = (visitedViews: TagView[], view: TagView) => {
-      const latestView = visitedViews.slice(-1)[0]
+      const latestView = visitedViews.slice(-1)[0] || undefined
       if (latestView !== undefined && latestView.fullPath !== undefined) {
         router.push(latestView.fullPath).catch((err) => {
           console.warn(err)

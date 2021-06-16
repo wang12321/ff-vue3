@@ -16,11 +16,14 @@
     "mock": "cd mock && node --experimental-modules ./mock.mjs"
   },
   "dependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "@types/js-cookie": "^2.2.6",
     "axios": "^0.21.1",
     "core-js": "^3.13.1",
     "element-plus": "^1.0.2-beta.46",
     "fuse.js": "^6.4.6",
+    "husky": "^6.0.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
     "koa-bodyparser": "^4.3.0",
@@ -73,6 +76,11 @@
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
