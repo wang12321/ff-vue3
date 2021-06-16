@@ -148,36 +148,10 @@ export default defineComponent({
         passwordDom.value.focus()
       })
     }
-    // const $api: InterfaceObject | undefined = inject('$api')
     const handleLogin: () => void | boolean = () => {
-      // loginFormDom.value.validate(async(valid: boolean) => {
-      //   if (valid) {
-      //     loading.value = true;
-      //     ($api as InterfaceObject).accountLogin({
-      //       username: loginForm.username,
-      //       password: loginForm.password
-      //     }).then((res: any) => {
-      //       const { data } = res
-      //       setCookie('token', `${data.tokenHaed} ${data.token}`)
-      //       setCookie('expiresTime', '1618454940987')
-      // console.log(11123)
-      //
-      // router.push({ path: '/home' })
-      //       loading.value = false
-      //     })
-      //   } else {
-      //     console.log('错误提交！')
-      //     return false
-      //   }
-      // })
       loginFormDom.value.validate(async(valid: boolean) => {
         if (valid) {
-          // console.log(api)
           loading.value = true
-          // await store.dispatch(UserActionTypes.ACTION_LOGIN, {
-          //   username: loginForm.username,
-          //   password: loginForm.password
-          // })
           store.dispatch('user/login', {
             username: loginForm.username,
             password: loginForm.password
