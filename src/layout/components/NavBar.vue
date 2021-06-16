@@ -1,63 +1,98 @@
 <template>
-  <div class="navbar">
-    <Hamburger
-        id="hamburger-container"
-        :is-active="true"
-        class="hamburger-container"
-        @toggle-click="toggleSideBar"
-    />
-    <bread-crumb id="breadcrumb-container" class="breadcrumb-container" />
-    <div class="right-menu">
-      <template v-if="device !== 'mobile'">
-        <header-search id="header-search" class="right-menu-item" />
-        <Screenfull class="right-menu-item hover-effect" />
-      </template>
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <span>{{name}}</span>
-          <i class="el-icon-arrow-down" />
-        </div>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="logout">
+  <div class="navbar" :style="{'background':navbarBackground }">
+    <div v-if="!isLayout && showLogo" class="logo_l">
+      <SidebarLogo :collapse="false"/>
+    </div>
+    <div :class="LayoutClass">
+      <Hamburger
+          id="hamburger-container"
+          :is-active="true"
+          class="hamburger-container"
+          @toggle-click="toggleSideBar"
+          :style="{'color':navbarColor }"
+          style="top:2px;position: relative"
+      />
+      <bread-crumb v-if="breadcrumb" id="breadcrumb-container" class="breadcrumb-container" :style="{'color':navbarColor }"/>
+      <div class="right-menu">
+        <template v-if="device !== 'mobile'">
+          <header-search v-if="IsSearch" id="header-search" class="right-menu-item" style="top:-1px;position: relative" :style="{'color':navbarColor }"/>
+          <Screenfull class="right-menu-item hover-effect" style="top:-13px;position: relative" :style="{'color':navbarColor }"/>
+          <div v-if="isSwitchEnvironment" class="right-menu-item hover-effect" style="top:-15px;position: relative" @click="switchAction">
+            <i v-if="!isSwitch" class="el-icon-user-solid" :style="{'color':navbarColor }" />
+            <i v-else class="el-icon-user-solid" :style="{'color':'red' }" />
+          </div>
+        </template>
+        <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" :style="{'color':navbarColor }">
+          <div class="avatar-wrapper">
+            <span>{{name}}</span>
+            <i class="el-icon-arrow-down" />
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="logout">
               <span style="display: block">
                 退出登入
               </span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
     </div>
   </div>
 
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs, computed } from 'vue'
-// import Hamburger from '@/components/hamburger/index.vue'
-// import breadCrumb from '@/components/bread-crumb/index.vue'
-
+import SidebarLogo from './sidebar/Logo.vue'
+import { defineComponent, reactive, toRefs, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import HeaderSearch from '@/components/HeaderSearch'
+import { setIsUseMasterApiKey, getIsUseMasterApiKey } from '@/utils/auth'
 
 export default defineComponent({
   name: 'NavBar',
   components: {
-    HeaderSearch
-    // Hamburger,
-    // breadCrumb
+    SidebarLogo
   },
   setup() {
     const store = useStore()
     const router = useRouter()
-
+    let isSwitch = ref(process.env.NODE_ENV.indexOf('development') > -1 && getIsUseMasterApiKey() === 'true')
     const device = computed(() => {
       return store.state.app.device.toString()
     })
     const name = computed(() => {
       return store.getters.name.toString()
     })
+    const breadcrumb = computed(() => {
+      return store.state.settings.breadcrumb
+    })
+    const IsSearch = computed(() => {
+      return store.state.settings.IsSearch
+    })
+    const showLogo = computed(() => {
+      return store.state.settings.sidebarLogo
+    })
+    const isCollapse = computed(() => {
+      return store.state.app.sidebar.opened
+    })
+    const isLayout = computed(() => {
+      return store.state.settings.Layout
+    })
+    const LayoutClass = computed(() => {
+      return !isLayout.value && showLogo.value ? 'navbarLogo' : ''
+    })
+    const navbarBackground = computed(() => {
+      return store.state.settings.navbarBackground
+    })
+    const navbarColor = computed(() => {
+      return store.state.settings.navbarColor
+    })
+    const isSwitchEnvironment = computed(() => {
+      return store.state.settings.isSwitchEnvironment
+    })
+
     const state = reactive({
       toggleSideBar: () => {
         store.commit('app/UPDATE_Sidebar_opened')
@@ -67,11 +102,28 @@ export default defineComponent({
         router.push('/login').catch((err) => {
           console.warn(err)
         })
+      },
+      switchAction() {
+        if (process.env.NODE_ENV.indexOf('development') > -1) {
+          isSwitch = !isSwitch.value
+          setIsUseMasterApiKey(isSwitch)
+          window.location.reload()
+        }
       }
     })
     return {
+      isSwitch,
+      isSwitchEnvironment,
+      showLogo,
+      isCollapse,
+      isLayout,
       device,
       name,
+      breadcrumb,
+      IsSearch,
+      LayoutClass,
+      navbarBackground,
+      navbarColor,
       ...toRefs(state)
     }
   }
@@ -79,13 +131,23 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/variables.scss";
+
 .navbar {
   height: 50px;
   overflow: hidden;
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-
+  .navbarLogo {
+    padding-left: $sideBarWidth;
+  }
+  .logo_l {
+    width: $sideBarWidth;
+    height: 50px;
+    position: absolute;
+    background-color: #0c202b;
+  }
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -107,8 +169,6 @@ export default defineComponent({
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
-
     &:focus {
       outline: none;
     }
@@ -119,8 +179,7 @@ export default defineComponent({
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
-
+      //vertical-align: text-bottom;
       &.hover-effect {
         cursor: pointer;
         transition: background 0.3s;

@@ -1,4 +1,3 @@
-<!-- 侧边栏item -->
 
 <template>
   <div

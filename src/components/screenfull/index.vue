@@ -3,10 +3,10 @@
 <template>
   <div id="screenfull">
     <div v-if="isFullscreen" @click="click">
-      <svg-icon name="exit-fullscreen" font-size="20px" />
+      <svg-icon name="exit-fullscreen" font-size="17px" />
     </div>
     <div @click="click" v-else>
-      <svg-icon name="fullscreen" font-size="20px" />
+      <svg-icon name="fullscreen" font-size="17px" />
     </div>
   </div>
 </template>

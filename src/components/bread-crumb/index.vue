@@ -8,9 +8,10 @@
             item.redirect === 'noRedirect' || index === breadcrumbs.length - 1
           "
           class="no-redirect"
+          :style="{'color':navbarColor }"
         >{{ item.meta.title }}</span
         >
-        <a v-else @click.prevent="handleLink(item)">{{
+        <a v-else @click.prevent="handleLink(item)" :style="{'color':navbarColor }">{{
           item.meta.title
         }}</a>
       </el-breadcrumb-item>
@@ -19,20 +20,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue'
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue'
 import { useRoute, RouteLocationMatched } from 'vue-router'
 import { compile } from 'path-to-regexp'
 import router from '@/router'
+import { useStore } from 'vuex'
 export default defineComponent({
   name: 'BreadCrumb',
   setup() {
+    const store = useStore()
     const currentRoute = useRoute()
     const pathCompile = (path: string) => {
       const { params } = currentRoute
       const toPath = compile(path)
       return toPath(params)
     }
-
+    const navbarColor = computed(() => {
+      return store.state.settings.navbarColor
+    })
     const state = reactive({
       breadcrumbs: [] as Array<RouteLocationMatched>,
       getBreadcrumb: () => {
@@ -88,6 +93,7 @@ export default defineComponent({
     })
 
     return {
+      navbarColor,
       ...toRefs(state)
     }
   }

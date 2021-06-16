@@ -1,7 +1,6 @@
 <template>
   <div :class="{'has-logo': showLogo}">
-    <SidebarLogo v-if="showLogo" :collapse="isCollapse" />
-
+    <SidebarLogo v-if="showLogo && isLayout" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
           :collapse="isCollapse"
@@ -56,6 +55,9 @@ export default defineComponent({
     const isCollapse = computed(() => {
       return store.state.app.sidebar.opened
     })
+    const isLayout = computed(() => {
+      return store.state.settings.Layout
+    })
     const activeMenu = computed(() => {
       const { meta, name } = route
       if (meta !== null || meta !== undefined) {
@@ -70,7 +72,8 @@ export default defineComponent({
       isCollapse,
       routes,
       showLogo,
-      activeMenu
+      activeMenu,
+      isLayout
     }
   }
 })

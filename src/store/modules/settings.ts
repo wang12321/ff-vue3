@@ -16,6 +16,8 @@ declare interface settingStore {
   isUnifiedLogin: boolean,
   isGameShow: boolean,
   isSwitchEnvironment: boolean|string|undefined
+  logoBackground: string,
+  logoColor: string,
 }
 const state:settingStore = {
   fixedHeader: defaultSettings.fixedHeader,
@@ -26,6 +28,8 @@ const state:settingStore = {
   breadcrumb: defaultSettings.breadcrumb,
   IsSearch: defaultSettings.IsSearch,
   Layout: defaultSettings.Layout,
+  logoBackground: defaultSettings.logoBackground, // logo字体和图标颜色
+  logoColor: defaultSettings.logoColor, // logo字体和图标颜色
   navbarBackground: defaultSettings.navbarBackground,
   navbarColor: defaultSettings.navbarColor,
   NODE_ENV: process.env.NODE_ENV,

@@ -1,6 +1,5 @@
-<!-- 侧边栏logo(需要跟随侧边栏折叠) -->
 <template>
-  <div class="sidebar-logo-container" :class="{collapse: !collapse}">
+  <div class="sidebar-logo-container" :class="{collapse: !collapse}" :style="{'background':logoBackground }">
     <transition name="sidebarLogoFade">
       <router-link
         v-if="!collapse"
@@ -13,9 +12,9 @@
             v-if="showLogo"
             name="component"
             font-size="17px"
-            style="color: #f4f4f5"
+            :style="{'color':logoColor }"
         />
-        <h1 class="sidebar-title" :style="{'color':'#ffffff' }">{{ title }} </h1>
+        <h1 class="sidebar-title" :style="{'color':logoColor }">{{ title }} </h1>
 
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
@@ -23,7 +22,7 @@
             v-if="showLogo"
             name="component"
             font-size="22px"
-            style="color: #f4f4f5"
+            :style="{'color':logoColor }"
         />
       </router-link>
     </transition>
@@ -50,9 +49,18 @@ export default defineComponent({
     const title = computed(() => {
       return store.state.settings.title
     })
+    const logoBackground = computed(() => {
+      return store.state.settings.logoBackground
+    })
+    const logoColor = computed(() => {
+      return store.state.settings.logoColor
+    })
+
     return {
       showLogo,
-      title
+      title,
+      logoBackground,
+      logoColor
     }
   }
 })
