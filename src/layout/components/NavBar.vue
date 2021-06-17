@@ -1,6 +1,6 @@
 <template>
   <div class="navbar" :style="{'background':navbarBackground }">
-    <div v-if="!isLayout && showLogo" class="logo_l">
+    <div v-if="!isLayout && showLogo && device !== '0'" class="logo_l">
       <SidebarLogo :collapse="false"/>
     </div>
     <div :class="LayoutClass">
@@ -14,7 +14,7 @@
       />
       <bread-crumb v-if="breadcrumb" id="breadcrumb-container" class="breadcrumb-container" :style="{'color':navbarColor }"/>
       <div class="right-menu">
-        <template v-if="device !== 'mobile'">
+        <template v-if="device !== '0'">
           <header-search v-if="IsSearch" id="header-search" class="right-menu-item" style="top:-1px;position: relative" :style="{'color':navbarColor }"/>
           <Screenfull class="right-menu-item hover-effect" style="top:-13px;position: relative" :style="{'color':navbarColor }"/>
           <div v-if="isSwitchEnvironment" class="right-menu-item hover-effect" style="top:-15px;position: relative" @click="switchAction">
@@ -58,7 +58,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const router = useRouter()
-    let isSwitch = ref(process.env.NODE_ENV.indexOf('development') > -1 && getIsUseMasterApiKey() === 'true')
+    const isSwitch = ref(process.env.NODE_ENV.indexOf('development') > -1 && getIsUseMasterApiKey() === 'true')
     const device = computed(() => {
       return store.state.app.device.toString()
     })
@@ -81,7 +81,7 @@ export default defineComponent({
       return store.state.settings.Layout
     })
     const LayoutClass = computed(() => {
-      return !isLayout.value && showLogo.value ? 'navbarLogo' : ''
+      return !isLayout.value && showLogo.value && device.value !== '0' ? 'navbarLogo' : ''
     })
     const navbarBackground = computed(() => {
       return store.state.settings.navbarBackground
@@ -95,7 +95,7 @@ export default defineComponent({
 
     const state = reactive({
       toggleSideBar: () => {
-        store.commit('app/UPDATE_Sidebar_opened')
+        store.dispatch('app/ToggleSideBar')
       },
       logout: async() => {
         await store.dispatch('user/logout')
@@ -105,7 +105,7 @@ export default defineComponent({
       },
       switchAction() {
         if (process.env.NODE_ENV.indexOf('development') > -1) {
-          isSwitch = !isSwitch.value
+          isSwitch.value = !isSwitch.value
           setIsUseMasterApiKey(isSwitch)
           window.location.reload()
         }

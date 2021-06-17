@@ -1,9 +1,9 @@
 <template>
   <div :class="{'has-logo': showLogo}">
-    <SidebarLogo v-if="showLogo && isLayout" :collapse="isCollapse" />
+    <SidebarLogo v-if="showLogo && isLayout" :collapse="!isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
-          :collapse="isCollapse"
+          :collapse="!isCollapse"
           :unique-opened="true"
           :default-active="activeMenu"
           :background-color="variables.menuBg"
@@ -32,7 +32,6 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import SidebarItem from './Item.vue'
-import router from '@/router'
 
 export default defineComponent({
   name: 'Index',
@@ -45,8 +44,6 @@ export default defineComponent({
     const route = useRoute()
 
     const routes = computed(() => {
-      console.log(router.options.routes)
-      // return router.options.routes
       return store.getters.permission_routes
     })
     const showLogo = computed(() => {

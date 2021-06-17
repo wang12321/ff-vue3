@@ -1,20 +1,25 @@
-
-import { MutationTree } from 'vuex'
+import { MutationTree, ActionTree } from 'vuex'
 import { getSidebarStatus, setSidebarStatus } from '@/utils/auth'
 
+export enum DeviceType {
+  // eslint-disable-next-line no-unused-vars
+  Mobile,
+  // eslint-disable-next-line no-unused-vars
+  Desktop,
+}
 declare interface appStore {
   sidebar: {
     opened: boolean,
     withoutAnimation: boolean
   },
-  device: string
+  device: DeviceType
 }
 const state:appStore = {
   sidebar: {
-    opened: getSidebarStatus() ? getSidebarStatus() !== 'closed' : true,
+    opened: !!((getSidebarStatus() && getSidebarStatus() !== 'closed')),
     withoutAnimation: false
   },
-  device: 'desktop'
+  device: DeviceType.Desktop
 }
 
 const mutations:MutationTree<appStore> = {
@@ -25,11 +30,27 @@ const mutations:MutationTree<appStore> = {
     } else {
       setSidebarStatus('closed')
     }
+  },
+  CLOSE_SIDEBAR: (state, withoutAnimation) => {
+    setSidebarStatus('closed')
+    state.sidebar.opened = false
+    state.sidebar.withoutAnimation = withoutAnimation
+  },
+  TOGGLE_DEVICE: (state, device:DeviceType) => {
+    state.device = device
   }
 }
 
-const actions = {
-
+const actions:ActionTree<appStore, any> = {
+  ToggleSideBar({ commit }) {
+    commit('UPDATE_Sidebar_opened')
+  },
+  CloseSideBar({ commit }, withoutAnimation) {
+    commit('CLOSE_SIDEBAR', withoutAnimation)
+  },
+  ToggleDevice({ commit }, device:DeviceType) {
+    commit('TOGGLE_DEVICE', device)
+  }
 }
 
 export default {

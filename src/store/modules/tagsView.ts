@@ -135,7 +135,6 @@ const actions:ActionTree<tagsStore, any> = {
       resolve([...state.cachedViews])
     })
   },
-
   delAllViews({ dispatch, state }, view) {
     return new Promise(resolve => {
       dispatch('delAllVisitedViews', view)
@@ -158,7 +157,6 @@ const actions:ActionTree<tagsStore, any> = {
       resolve([...state.cachedViews])
     })
   },
-
   updateVisitedView({ commit }, view) {
     commit('UPDATE_VISITED_VIEW', view)
   }

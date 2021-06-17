@@ -1,6 +1,11 @@
 <template>
 <div :class="classObj" class="app-wrapper" >
   <div v-if="isLayout">
+    <div
+        v-if="classObj.mobile && sidebar.opened"
+        class="drawer-bg"
+        @click="handleClickOutside"
+    />
     <Sidebar class="sidebar-container" />
     <div class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
@@ -11,6 +16,11 @@
     </div>
   </div>
   <div v-else>
+    <div
+        v-if="classObj.mobile && sidebar.opened"
+        class="drawer-bg"
+        @click="handleClickOutside"
+    />
     <el-header style="height: 50px;padding: 0">
       <div :class="{'fixed-header-layout':fixedHeader||!isLayout}">
         <NavBar></NavBar>
@@ -22,7 +32,7 @@
         <div :class="{'fixed-header-tags':fixedHeader||!isLayout}">
           <tags-view v-if="isTagsView" />
         </div>
-        <AppMain :class="{'fixed-header-tags-main':(fixedHeader && isTagsView) || !isLayout }"/>
+        <AppMain :class="{'fixed-header-tags-main': (classObj.mobile ? false:((fixedHeader && isTagsView ) || !isLayout))}"/>
       </div>
     </div>
   </div>
@@ -31,13 +41,18 @@
 
 <script>
 import { Sidebar, NavBar, AppMain, TagsView } from './components'
-// import { useStore } from '@/store'
 import { useStore } from 'vuex'
-// import { globalStoreKey } from '../store';
+import FixiOSBug from './components/sidebar/FixiOSBug'
+import { DeviceType } from '@/store/modules/app'
 
 import {
   defineComponent,
-  computed
+  computed,
+  onMounted,
+  onBeforeMount,
+  onBeforeUnmount,
+  toRefs,
+  reactive
 } from 'vue'
 
 export default defineComponent({
@@ -50,14 +65,19 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    console.log(store)
-
+    const {
+      device,
+      resizeMounted,
+      watchRouter,
+      addEventListenerOnResize,
+      removeEventListenerResize
+    } = FixiOSBug()
     const classObj = computed(() => {
       return {
-        hideSidebar: store.state.app.sidebar.opened,
+        hideSidebar: !store.state.app.sidebar.opened,
         openSidebar: store.state.app.sidebar.opened,
         withoutAnimation: store.state.app.sidebar.withoutAnimation,
-        mobile: false
+        mobile: device.value === DeviceType.Mobile
       }
     })
     const fixedHeader = computed(() => {
@@ -67,13 +87,36 @@ export default defineComponent({
       return store.state.settings.Layout
     })
     const isTagsView = computed(() => {
-      return store.state.settings.tagsView
+      return store.state.settings.tagsView && device.value !== DeviceType.Mobile
+    })
+    const sidebar = computed(() => {
+      return store.state.app.sidebar
+    })
+    const state = reactive({
+      handleClickOutside: () => {
+        store.dispatch('app/CloseSideBar', false)
+      }
+    })
+    watchRouter()
+    onBeforeMount(() => {
+      addEventListenerOnResize()
+    })
+
+    onMounted(() => {
+      resizeMounted()
+    })
+
+    onBeforeUnmount(() => {
+      removeEventListenerResize()
     })
     return {
       classObj,
       fixedHeader,
       isLayout,
-      isTagsView
+      isTagsView,
+      sidebar,
+      ...toRefs(state)
+
     }
   }
 })
