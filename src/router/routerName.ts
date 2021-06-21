@@ -14,5 +14,12 @@ files.keys().forEach(key => {
   tmp = files(key).default
 })
 export const routerNameP = {
-  ...tmp
+  ...tmp,
+  pagination: {
+    name: '分页组件',
+    icon: 'component',
+    index: 1,
+    permission: [1, 2, 3],
+    newTime: '2021-07-20'
+  }
 }

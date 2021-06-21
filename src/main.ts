@@ -11,7 +11,8 @@ import loadComponents from '@/components'
 import '@/icons'
 import '@/styles/index.scss' // global css
 import '@/permission' // permission control
+import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 const app = createApp(App)
 loadComponents(app)
-app.use(store).use(router).use(ElementPlus).mount('#app')
+app.use(store).use(router).use(ElementPlus, { locale }).mount('#app')

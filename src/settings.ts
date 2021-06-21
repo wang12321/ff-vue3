@@ -1,6 +1,6 @@
 export default {
   logo: 'component', // 配置logo 只处理了svg的
-  title: 'Vue3-Admin-FF', // 配置title
+  title: 'Vue3-Component', // 配置title
   breadcrumb: true, // 配置面包屑
   IsSearch: true, // 配置菜单搜索
   tagsView: true, // 配置导航标签
