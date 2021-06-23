@@ -1,7 +1,6 @@
 {
-  "name": "ff-vue",
-  "version": "0.1.0",
-  "private": true,
+  "name": "vue3-components-ff",
+  "version": "0.0.2",
   "scripts": {
     "serve:dev": "vue-cli-service serve --mode development",
     "serve:devSW": "vue-cli-service serve --mode developmentSW",
@@ -41,6 +40,7 @@
     "vue-class-component": "^8.0.0-rc.1",
     "vue-loader-v16": "~16.0.0-beta.5.4",
     "vue-router": "^4.0.8",
+    "vue3-components-ff": "0.0.1",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
@@ -75,6 +75,9 @@
     "vue-jest": "^5.0.0-alpha.10",
     "webpack": "^4.46.0"
   },
+  "files": [
+    "src/components"
+  ],
   "gitHooks": {
     "pre-commit": "lint-staged",
     "commit-msg": "commitlint --config commitlint.config.js -e -V"

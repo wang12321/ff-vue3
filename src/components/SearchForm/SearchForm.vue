@@ -7,6 +7,7 @@
       :rules="rules"
       class="demo-form-inline"
       :label-width="labelWidth"
+      @submit.enter.prevent
     >
       <div v-for="item in formOptions" :key="item.key" style="display:inline-block">
         <el-form-item v-if="isAdvanced ? checkIsShow(item) : checkIsShowDefault(item)" :prop="item.key" :label="!item.titleShow ? item.title+'：':''" :label-width="item.labelWidth || labelWidth">
@@ -23,7 +24,7 @@
               v-else-if="item.type==='month'"
               v-model="formData[item.key]"
               type="month"
-              value-format="yyyy-MM"
+              value-format="YYYY-MM"
               placeholder="请选择月份"
               :style="item.width ? `width:${item.width}` : ''"
           />
@@ -31,7 +32,7 @@
               v-else-if="item.type==='year'"
               v-model="formData[item.key]"
               type="year"
-              value-format="yyyy"
+              value-format="YYYY"
               placeholder="请选择年"
               :style="item.width ? `width:${item.width}` : ''"
           />
@@ -94,7 +95,7 @@
               type="datetime"
               :clearable="item.clearable"
               :placeholder="item.placeholder?item.placeholder:'请选择'+item.title"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="YYYY-MM-dd HH:mm:ss"
               :style="item.width ? `width:${item.width}` : ''"
           />
           <el-date-picker
@@ -103,7 +104,7 @@
               type="datetime"
               :clearable="item.clearable"
               :placeholder="item.placeholder?item.placeholder:'请选择'+item.title"
-              value-format="yyyyMMddHHmmss"
+              value-format="YYYYMMddHHmmss"
               :style="item.width ? `width:${item.width}` : ''"
           />
           <el-date-picker
@@ -112,7 +113,7 @@
               type="date"
               :clearable="item.clearable"
               :placeholder="item.placeholder?item.placeholder:'请选择'+item.title"
-              value-format="yyyy-MM-dd"
+              value-format="YYYY-MM-dd"
               :style="item.width ? `width:${item.width}` : ''"
           />
           <el-date-picker
@@ -121,7 +122,7 @@
               type="date"
               :clearable="item.clearable"
               :placeholder="item.placeholder?item.placeholder:'请选择'+item.title"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="YYYY-MM-dd HH:mm:ss"
               :style="item.width ? `width:${item.width}` : ''"
           />
           <el-date-picker
@@ -132,7 +133,7 @@
               range-separator="至"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="YYYY-MM-dd HH:mm:ss"
               :placeholder="item.placeholder?item.placeholder:'请选择'+item.title"
               :style="item.width ? `width:${item.width}` : ''"
           />
@@ -144,7 +145,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              value-format="yyyy-MM-dd"
+              value-format="YYYY-MM-dd"
               :placeholder="item.placeholder?item.placeholder:'请选择'+item.title"
               :style="item.width ? `width:${item.width}` : ''"
           />

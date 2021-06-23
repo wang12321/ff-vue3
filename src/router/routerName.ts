@@ -21,5 +21,12 @@ export const routerNameP = {
     index: 1,
     permission: [1, 2, 3],
     newTime: '2021-07-20'
+  },
+  searchForm: {
+    name: '搜索组件',
+    icon: 'component',
+    index: 1,
+    permission: [1, 2, 3],
+    newTime: '2021-07-20'
   }
 }

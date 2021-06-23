@@ -1,4 +1,22 @@
-# ff-vue3
+#vue3-components-ff
+
+##使用
+```
+npm i  vue3-components-ff  @types/lodash
+```
+
+##main.ts 引入
+
+import loadComponents from 'vue3-components-ff/src/components'
+loadComponents(app)
+```
+
+#0.0.1 分页组件，搜索组件，表单组件
+
+
+
+
+# ff-vue3 脚手架
 
 ## Project setup
 ```
