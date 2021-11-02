@@ -116,7 +116,6 @@ export default defineComponent({
       isTagsView,
       sidebar,
       ...toRefs(state)
-
     }
   }
 })
